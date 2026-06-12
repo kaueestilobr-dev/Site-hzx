@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>HzX Vision Dashboard</title>
 
 <link rel="stylesheet" href="style.css">
-<script src="/socket.io/socket.io.js"></script>
 
 </head>
+
 <body>
+
+<div class="background-blur"></div>
 
 <div class="sidebar">
 
@@ -18,143 +23,96 @@
     </div>
 
     <ul>
-        <li><a href="#dashboard">🏠 Dashboard</a></li>
-        <li><a href="#logs">📜 Logs</a></li>
-        <li><a href="#bans">🔨 Banimentos</a></li>
-        <li><a href="#avisos">📢 Avisos</a></li>
-        <li><a href="#perfil">👤 Perfil</a></li>
+
+        <li>
+            <a href="#dashboard">
+                🏠 Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="#avisos">
+                📢 Editor Embed
+            </a>
+        </li>
+
+        <li>
+            <a href="#logs">
+                📜 Logs
+            </a>
+        </li>
+
     </ul>
 
 </div>
 
 <div class="content">
 
-    <div class="top-bar">
+    <section id="dashboard" class="card">
 
-        <div class="user-info">
+        <h1>⚡ HzX Vision</h1>
 
-            <img
-            id="avatar"
-            src="https://cdn.discordapp.com/embed/avatars/0.png"
-            alt="Avatar">
+        <p>
+            Painel integrado ao Discord para gerenciamento
+            de avisos e monitoramento de logs.
+        </p>
 
-            <div>
+        <div class="log-box">
 
-                <h3 id="username">
-                    Carregando...
-                </h3>
-
-                <span id="cargo">
-                    Staff HzX
-                </span>
-
-            </div>
+            <p>🟢 Bot Online</p>
+            <p>🔗 Servidor Conectado</p>
+            <p>⚡ Sistema Operacional</p>
 
         </div>
-
-    </div>
-
-    <section id="dashboard">
-
-        <h1>⚡ Dashboard HzX Vision</h1>
-
-        <div class="stats">
-
-            <div class="stat-card">
-                <h3>👥 Membros</h3>
-                <span id="membros">0</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>🖼 Wallpapers</h3>
-                <span id="wallpapers">0</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>🛡 Staff</h3>
-                <span id="staff">0</span>
-            </div>
-
-            <div class="stat-card">
-                <h3>📜 Logs</h3>
-                <span id="logsCount">0</span>
-            </div>
-
-        </div>
-
-    </section>
-
-    <section id="logs" class="card">
-
-        <h2>📜 Logs em Tempo Real</h2>
-
-        <div class="logs-container" id="logsContainer">
-
-            <div class="log-item">
-                Sistema iniciado...
-            </div>
-
-        </div>
-
-    </section>
-
-    <section id="bans" class="card">
-
-        <h2>🔨 Gerenciar Banimentos</h2>
-
-        <input
-        type="text"
-        id="userId"
-        placeholder="ID do usuário">
-
-        <input
-        type="text"
-        id="motivo"
-        placeholder="Motivo">
-
-        <button class="action-btn" id="banBtn">
-            Banir Usuário
-        </button>
-
-        <table class="data-table">
-
-            <thead>
-                <tr>
-                    <th>Usuário</th>
-                    <th>Motivo</th>
-                </tr>
-            </thead>
-
-            <tbody id="banTable">
-
-            </tbody>
-
-        </table>
 
     </section>
 
     <section id="avisos" class="card">
 
-        <h2>📢 Central de Avisos</h2>
+        <h2>📢 Editor de Embed</h2>
 
         <div class="avisos-grid">
 
-            <div>
+            <div class="embed-editor">
 
                 <input
-                type="text"
-                id="titulo"
-                placeholder="Título do aviso">
+                id="title"
+                placeholder="Título">
 
                 <textarea
-                id="descricao"
-                placeholder="Descrição do aviso"></textarea>
+                id="description"
+                placeholder="Descrição da Embed"></textarea>
+
+                <input
+                type="color"
+                id="color"
+                value="#7b2cff">
+
+                <input
+                id="author"
+                placeholder="Autor">
+
+                <input
+                id="footer"
+                placeholder="Footer">
+
+                <input
+                id="image"
+                placeholder="URL da Imagem">
+
+                <select id="channelSelect">
+
+                    <option>
+                        Escolha um canal
+                    </option>
+
+                </select>
 
                 <button
-                class="action-btn"
-                id="enviarAviso">
+                id="sendEmbed"
+                class="action-btn">
 
-                    Enviar Aviso
+                    🚀 Enviar Embed
 
                 </button>
 
@@ -162,15 +120,37 @@
 
             <div class="embed-preview">
 
-                <div class="embed">
+                <div class="discord-embed">
 
-                    <h3 id="previewTitulo">
-                        Título do Aviso
-                    </h3>
+                    <div id="embedBar"></div>
 
-                    <p id="previewDescricao">
-                        Descrição do aviso...
-                    </p>
+                    <div class="embed-content">
+
+                        <span id="previewAuthor">
+                            Autor
+                        </span>
+
+                        <h3 id="previewTitle">
+                            Título
+                        </h3>
+
+                        <p id="previewDescription">
+                            Descrição da embed...
+                        </p>
+
+                        <img
+                        id="previewImage"
+                        style="
+                        display:none;
+                        max-width:100%;
+                        border-radius:10px;
+                        margin-top:10px;">
+
+                        <div id="previewFooter">
+                            HzX Vision
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -180,31 +160,18 @@
 
     </section>
 
-    <section id="perfil" class="card">
+    <section id="logs" class="card">
 
-        <h2>👤 Perfil Discord</h2>
+        <h2>📜 Logs do Sistema</h2>
 
-        <div class="perfil-card">
+        <div id="logsContainer">
 
-            <img
-            id="perfilAvatar"
-            src="https://cdn.discordapp.com/embed/avatars/0.png"
-            class="avatar">
+            <div class="log-item">
+                Sistema iniciado...
+            </div>
 
-            <h3 id="perfilNome">
-                Carregando...
-            </h3>
-
-            <p id="perfilId">
-                ID: Carregando...
-            </p>
-
-            <div id="roles-container">
-
-                <span class="role-badge">
-                    Carregando cargos...
-                </span>
-
+            <div class="log-item">
+                Aguardando eventos...
             </div>
 
         </div>
