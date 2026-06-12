@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HzX Vision Dashboard</title>
+
 <link rel="stylesheet" href="style.css">
 <script src="/socket.io/socket.io.js"></script>
+
 </head>
 <body>
 
@@ -27,30 +29,55 @@
 
 <div class="content">
 
+    <div class="top-bar">
+
+        <div class="user-info">
+
+            <img
+            id="avatar"
+            src="https://cdn.discordapp.com/embed/avatars/0.png"
+            alt="Avatar">
+
+            <div>
+
+                <h3 id="username">
+                    Carregando...
+                </h3>
+
+                <span id="cargo">
+                    Staff HzX
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
     <section id="dashboard">
 
-        <h1>Painel Staff</h1>
+        <h1>⚡ Dashboard HzX Vision</h1>
 
         <div class="stats">
 
             <div class="stat-card">
                 <h3>👥 Membros</h3>
-                <span id="membros">152</span>
+                <span id="membros">0</span>
             </div>
 
             <div class="stat-card">
-                <h3>📜 Logs Hoje</h3>
-                <span id="logsHoje">34</span>
+                <h3>🖼 Wallpapers</h3>
+                <span id="wallpapers">0</span>
             </div>
 
             <div class="stat-card">
-                <h3>🔨 Banidos</h3>
-                <span id="banidos">12</span>
+                <h3>🛡 Staff</h3>
+                <span id="staff">0</span>
             </div>
 
             <div class="stat-card">
-                <h3>📢 Avisos</h3>
-                <span id="avisosCount">48</span>
+                <h3>📜 Logs</h3>
+                <span id="logsCount">0</span>
             </div>
 
         </div>
@@ -64,7 +91,7 @@
         <div class="logs-container" id="logsContainer">
 
             <div class="log-item">
-                Sistema iniciado.
+                Sistema iniciado...
             </div>
 
         </div>
@@ -73,26 +100,34 @@
 
     <section id="bans" class="card">
 
-        <h2>🔨 Banimentos</h2>
+        <h2>🔨 Gerenciar Banimentos</h2>
 
-        <input type="text" placeholder="ID do usuário">
-        <input type="text" placeholder="Motivo">
+        <input
+        type="text"
+        id="userId"
+        placeholder="ID do usuário">
 
-        <button class="action-btn">
+        <input
+        type="text"
+        id="motivo"
+        placeholder="Motivo">
+
+        <button class="action-btn" id="banBtn">
             Banir Usuário
         </button>
 
         <table class="data-table">
 
-            <tr>
-                <th>Usuário</th>
-                <th>Motivo</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Motivo</th>
+                </tr>
+            </thead>
 
-            <tr>
-                <td>Exemplo#0001</td>
-                <td>Spam</td>
-            </tr>
+            <tbody id="banTable">
+
+            </tbody>
 
         </table>
 
@@ -106,12 +141,21 @@
 
             <div>
 
-                <input type="text" id="titulo" placeholder="Título">
+                <input
+                type="text"
+                id="titulo"
+                placeholder="Título do aviso">
 
-                <textarea id="descricao" placeholder="Descrição"></textarea>
+                <textarea
+                id="descricao"
+                placeholder="Descrição do aviso"></textarea>
 
-                <button class="action-btn">
+                <button
+                class="action-btn"
+                id="enviarAviso">
+
                     Enviar Aviso
+
                 </button>
 
             </div>
@@ -138,15 +182,30 @@
 
     <section id="perfil" class="card">
 
-        <h2>👤 Perfil</h2>
+        <h2>👤 Perfil Discord</h2>
 
         <div class="perfil-card">
 
-            <img src="https://cdn.discordapp.com/embed/avatars/0.png">
+            <img
+            id="perfilAvatar"
+            src="https://cdn.discordapp.com/embed/avatars/0.png"
+            class="avatar">
 
-            <h3>Staff</h3>
+            <h3 id="perfilNome">
+                Carregando...
+            </h3>
 
-            <span>Cargo: Diretor</span>
+            <p id="perfilId">
+                ID: Carregando...
+            </p>
+
+            <div id="roles-container">
+
+                <span class="role-badge">
+                    Carregando cargos...
+                </span>
+
+            </div>
 
         </div>
 
@@ -157,30 +216,4 @@
 <script src="dashboard.js"></script>
 
 </body>
-</html>            <h3>🖼 Wallpapers</h3>
-            <span>845</span>
-        </div>
-
-        <div class="stat-card">
-            <h3>🛡 Staff</h3>
-            <span>12</span>
-        </div>
-
-        <div class="stat-card">
-            <h3>📜 Logs</h3>
-            <span>5.421</span>
-        </div>
-
-    </div>
-
-    <div class="card">
-        <h2>Logs Recentes</h2>
-
-        <div class="log-box">
-            <p>🟣 yDaLLaSs enviou um wallpaper.</p>
-            <p>🟣 Helper respondeu uma dúvida.</p>
-            <p>🟣 Novo membro entrou.</p>
-        </div>
-    </div>
-
-</div>
+</html>
