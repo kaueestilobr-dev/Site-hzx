@@ -1,43 +1,63 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>Painel HZX Vision</h1>
-        <nav>
-            <a href="#">Gerenciar Membros</a>
-            <a href="#">Logs de Atividades</a>
-        </nav>
-    </header>
+<div class="sidebar">
+    <div class="logo">
+        <h2>⚡ HzX Vision</h2>
+    </div>
 
-    <main>
-        <section class="box">
-            <h2>Gerenciamento de Membros</h2>
-            <table>
-                <thead>
-                    <tr><th>Usuário</th><th>Cargo</th><th>Ações</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Exemplo#0001</td><td>Staff</td><td><button class="btn-punir">Punir</button></td></tr>
-                </tbody>
-            </table>
-        </section>
+    <ul>
+        <li><a href="#">🏠 Dashboard</a></li>
+        <li><a href="#">👥 Membros</a></li>
+        <li><a href="#">🖼 Wallpapers</a></li>
+        <li><a href="#">📜 Logs</a></li>
+        <li><a href="#">⚙️ Configurações</a></li>
+    </ul>
+</div>
 
-        <section class="box">
-            <h2>Logs de Atividades</h2>
-            <div class="log-entry">[12/06/2026] Usuário X banido por Y.</div>
-            <div class="log-entry">[12/06/2026] Comando !limpar executado.</div>
-        </section>
-    </main>
-</body>
-</html>
-            <div class="log-box">
-                <p>[12/06/2026] Usuário X banido por Y.</p>
-                <p>[12/06/2026] Comando !limpar executado.</p>
-            </div>
-        </section>
-    </main>
-</body>
-</html>
+<div class="content">
+
+    <div class="topbar">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Bem-vindo ao painel HzX Vision</p>
+        </div>
+
+        <div class="user-card">
+            <img src="https://cdn.discordapp.com/embed/avatars/0.png">
+            <span>Administrador</span>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>👥 Membros</h3>
+            <span>2.451</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>🖼 Wallpapers</h3>
+            <span>845</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>🛡 Staff</h3>
+            <span>12</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>📜 Logs</h3>
+            <span>5.421</span>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <h2>Logs Recentes</h2>
+
+        <div class="log-box">
+            <p>🟣 yDaLLaSs enviou um wallpaper.</p>
+            <p>🟣 Helper respondeu uma dúvida.</p>
+            <p>🟣 Novo membro entrou.</p>
+        </div>
+    </div>
+
+</div>
