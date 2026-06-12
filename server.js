@@ -15,7 +15,7 @@ app.use(express.static(__dirname));
 
 // CONFIGURAÇÃO DO DISCORD
 const CLIENT_ID = process.env.CLIENT_ID || '1514845956020113408';
-const CLIENT_SECRET = process.env.CLIENT_SECRET || 'SEU_SECRET_AQUI';
+const CLIENT_SECRET = process.env.CLIENT_SECRET || '-sebk_0XyoJ6SskrwQDg0JWVVC0SAbQ1';
 const CALLBACK_URL = 'https://site-hzx.onrender.com/auth/discord/callback';
 
 passport.use(new Strategy({
