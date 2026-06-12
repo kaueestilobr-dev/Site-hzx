@@ -10,8 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Configuração para servir arquivos (CSS, JS, Imagens)
-// Isso resolve o problema do CSS não aparecer
+// Serve seus arquivos estáticos (CSS, JS, Imagens)
 app.use(express.static(__dirname));
 
 // CONFIGURAÇÃO DO DISCORD
@@ -44,9 +43,6 @@ io.on('connection', (socket) => {
     console.log('Painel conectado via Socket');
 });
 
-// Para enviar um log novo do seu bot para o painel, use:
-// io.emit('novoLog', 'Sua mensagem de log aqui');
-
 // ROTAS
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
@@ -63,12 +59,3 @@ app.get('/dashboard', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
-}), (req, res) => res.redirect('/dashboard'));
-
-app.get('/dashboard', (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/');
-    res.sendFile(path.join(__dirname, 'dashboard.html'));
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
