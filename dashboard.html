@@ -1,40 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HzX Vision Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
 <div class="sidebar">
+
     <div class="logo">
         <h2>⚡ HzX Vision</h2>
     </div>
 
     <ul>
-        <li><a href="#">🏠 Dashboard</a></li>
-        <li><a href="#">👥 Membros</a></li>
-        <li><a href="#">🖼 Wallpapers</a></li>
-        <li><a href="#">📜 Logs</a></li>
-        <li><a href="#">⚙️ Configurações</a></li>
+        <li><a href="#dashboard">🏠 Dashboard</a></li>
+        <li><a href="#logs">📜 Logs</a></li>
+        <li><a href="#bans">🔨 Banimentos</a></li>
+        <li><a href="#avisos">📢 Avisos</a></li>
+        <li><a href="#perfil">👤 Perfil</a></li>
     </ul>
+
 </div>
 
 <div class="content">
 
-    <div class="topbar">
-        <div>
-            <h1>Dashboard</h1>
-            <p>Bem-vindo ao painel HzX Vision</p>
+    <section id="dashboard">
+
+        <h1>Painel Staff</h1>
+
+        <div class="stats">
+
+            <div class="stat-card">
+                <h3>👥 Membros</h3>
+                <span id="membros">152</span>
+            </div>
+
+            <div class="stat-card">
+                <h3>📜 Logs Hoje</h3>
+                <span id="logsHoje">34</span>
+            </div>
+
+            <div class="stat-card">
+                <h3>🔨 Banidos</h3>
+                <span id="banidos">12</span>
+            </div>
+
+            <div class="stat-card">
+                <h3>📢 Avisos</h3>
+                <span id="avisosCount">48</span>
+            </div>
+
         </div>
 
-        <div class="user-card">
+    </section>
+
+    <section id="logs" class="card">
+
+        <h2>📜 Logs em Tempo Real</h2>
+
+        <div class="logs-container" id="logsContainer">
+
+            <div class="log-item">
+                Sistema iniciado.
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="bans" class="card">
+
+        <h2>🔨 Banimentos</h2>
+
+        <input type="text" placeholder="ID do usuário">
+        <input type="text" placeholder="Motivo">
+
+        <button class="action-btn">
+            Banir Usuário
+        </button>
+
+        <table class="data-table">
+
+            <tr>
+                <th>Usuário</th>
+                <th>Motivo</th>
+            </tr>
+
+            <tr>
+                <td>Exemplo#0001</td>
+                <td>Spam</td>
+            </tr>
+
+        </table>
+
+    </section>
+
+    <section id="avisos" class="card">
+
+        <h2>📢 Central de Avisos</h2>
+
+        <div class="avisos-grid">
+
+            <div>
+
+                <input type="text" id="titulo" placeholder="Título">
+
+                <textarea id="descricao" placeholder="Descrição"></textarea>
+
+                <button class="action-btn">
+                    Enviar Aviso
+                </button>
+
+            </div>
+
+            <div class="embed-preview">
+
+                <div class="embed">
+
+                    <h3 id="previewTitulo">
+                        Título do Aviso
+                    </h3>
+
+                    <p id="previewDescricao">
+                        Descrição do aviso...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="perfil" class="card">
+
+        <h2>👤 Perfil</h2>
+
+        <div class="perfil-card">
+
             <img src="https://cdn.discordapp.com/embed/avatars/0.png">
-            <span>Administrador</span>
-        </div>
-    </div>
 
-    <div class="stats-grid">
+            <h3>Staff</h3>
 
-        <div class="stat-card">
-            <h3>👥 Membros</h3>
-            <span>2.451</span>
+            <span>Cargo: Diretor</span>
+
         </div>
 
-        <div class="stat-card">
-            <h3>🖼 Wallpapers</h3>
+    </section>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>            <h3>🖼 Wallpapers</h3>
             <span>845</span>
         </div>
 
