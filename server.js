@@ -59,8 +59,8 @@ const CANAIS_WEBHOOKS = {
 // Rota que alimenta o menu "Escolha um canal" no seu dashboard.html
 app.get('/api/channels', (req, res) => {
     const listaCanais = Object.keys(CANAIS_WEBHOOKS).map(idCanal => ({
-        id: idCanal,                         // Enviado para o back-end identificar o webhook
-        name: idCanal.toUpperCase()          // Como aparece escrito na caixinha do site
+        id: idCanal,
+        name: idCanal.toUpperCase()
     }));
     res.json(listaCanais);
 });
@@ -69,7 +69,6 @@ app.get('/api/channels', (req, res) => {
 app.post('/api/enviar-discord', async (req, res) => {
     const { channelId, title, description, color, author, footer, image } = req.body;
 
-    // Pega a URL do Webhook baseado no canal que você clicou no painel
     const WEBHOOK_URL = CANAIS_WEBHOOKS[channelId];
 
     if (!WEBHOOK_URL) {
@@ -97,51 +96,6 @@ app.post('/api/enviar-discord', async (req, res) => {
 // =======================================================
 //   ROTAS DE PÁGINAS
 // =======================================================
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/auth/discord', passport.authenticate('discord'));
-app.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => res.redirect('/dashboard'));
-app.get('/dashboard', (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/');
-    res.sendFile(path.join(__dirname, 'dashboard.html'));
-});
-
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
-    resave: false, 
-    saveUninitialized: false 
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-// SOCKET.IO
-io.on('connection', (socket) => {
-    console.log('Painel conectado via Socket');
-});
-
-// --- NOVA ROTA DE ENVIO PARA O DISCORD ---
-app.post('/api/enviar-discord', async (req, res) => {
-    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1516328791734095942/5YwTinFY9vHJ5FtyWuIXog6ZKHo-rfjRjJM5Ka-WD45zZbSYkGCYN5t_8MmqRFZiXNWc'; 
-    
-    const { title, description, color, author, footer, image } = req.body;
-
-    try {
-        await axios.post(WEBHOOK_URL, {
-            embeds: [{
-                author: { name: author || 'HzX Vision' },
-                title: title || 'Sem título',
-                description: description || 'Sem descrição',
-                color: color ? parseInt(color.replace('#',''), 16) : 0,
-                footer: { text: footer || 'HzX Vision' },
-                image: image ? { url: image } : null
-            }]
-        });
-        res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Erro ao enviar' });
-    }
-});
-
-// ROTAS
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/auth/discord', passport.authenticate('discord'));
 app.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => res.redirect('/dashboard'));
