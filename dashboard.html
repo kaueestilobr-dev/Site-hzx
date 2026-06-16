@@ -1,186 +1,113 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>HzX Vision Dashboard</title>
-
-<link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-<div class="background-blur"></div>
-
-<div class="sidebar">
-
-    <div class="logo">
-        <h2>⚡ HzX Vision</h2>
-    </div>
-
-    <ul>
-
-        <li>
-            <a href="#dashboard">
-                🏠 Dashboard
-            </a>
-        </li>
-
-        <li>
-            <a href="#avisos">
-                📢 Editor Embed
-            </a>
-        </li>
-
-        <li>
-            <a href="#logs">
-                📜 Logs
-            </a>
-        </li>
-
-    </ul>
-
-</div>
-
-<div class="content">
-
-    <section id="dashboard" class="card">
-
-        <h1>⚡ HzX Vision</h1>
-
-        <p>
-            Painel integrado ao Discord para gerenciamento
-            de avisos e monitoramento de logs.
-        </p>
-
-        <div class="log-box">
-
-            <p>🟢 Bot Online</p>
-            <p>🔗 Servidor Conectado</p>
-            <p>⚡ Sistema Operacional</p>
-
-        </div>
-
-    </section>
-
-    <section id="avisos" class="card">
-
-        <h2>📢 Editor de Embed</h2>
-
-        <div class="avisos-grid">
-
-            <div class="embed-editor">
-
-                <input
-                id="title"
-                placeholder="Título">
-
-                <textarea
-                id="description"
-                placeholder="Descrição da Embed"></textarea>
-
-                <input
-                type="color"
-                id="color"
-                value="#7b2cff">
-
-                <input
-                id="author"
-                placeholder="Autor">
-
-                <input
-                id="footer"
-                placeholder="Footer">
-
-                <input
-                id="image"
-                placeholder="URL da Imagem">
-
-                <select id="channelSelect">
-
-                    <option>
-                        Escolha um canal
-                    </option>
-
-                </select>
-
-                <button
-                id="sendEmbed"
-                class="action-btn">
-
-                    🚀 Enviar Embed
-
-                </button>
-
-            </div>
-
-            <div class="embed-preview">
-
-                <div class="discord-embed">
-
-                    <div id="embedBar"></div>
-
-                    <div class="embed-content">
-
-                        <span id="previewAuthor">
-                            Autor
-                        </span>
-
-                        <h3 id="previewTitle">
-                            Título
-                        </h3>
-
-                        <p id="previewDescription">
-                            Descrição da embed...
-                        </p>
-
-                        <img
-                        id="previewImage"
-                        style="
-                        display:none;
-                        max-width:100%;
-                        border-radius:10px;
-                        margin-top:10px;">
-
-                        <div id="previewFooter">
-                            HzX Vision
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <section id="logs" class="card">
-
-        <h2>📜 Logs do Sistema</h2>
-
-        <div id="logsContainer">
-
-            <div class="log-item">
-                Sistema iniciado...
-            </div>
-
-            <div class="log-item">
-                Aguardando eventos...
-            </div>
-
-        </div>
-
-    </section>
-
-</div>
-
-<script src="dashboard.js"></script>
-
-</body>
-</html>
+document.addEventListener('DOMContentLoaded', () => {
+    // Captura dos elementos de Input do formulário
+    const channelSelect = document.getElementById('channelSelect');
+    const titleInput = document.getElementById('title');
+    const descriptionInput = document.getElementById('description');
+    const colorInput = document.getElementById('color');
+    const authorInput = document.getElementById('author');
+    const footerInput = document.getElementById('footer');
+    const imageInput = document.getElementById('image');
+    const sendBtn = document.getElementById('sendEmbed');
+
+    // Captura dos elementos do Preview em tempo real
+    const previewTitle = document.getElementById('previewTitle');
+    const previewDescription = document.getElementById('previewDescription');
+    const embedBar = document.getElementById('embedBar');
+    const previewAuthor = document.getElementById('previewAuthor');
+    const previewFooter = document.getElementById('previewFooter');
+    const previewImage = document.getElementById('previewImage');
+
+    // =======================================================
+    // 1. ATUALIZAÇÃO DO PREVIEW EM TEMPO REAL (LIVE PREVIEW)
+    // =======================================================
+    titleInput.addEventListener('input', () => previewTitle.innerText = titleInput.value || 'Título');
+    descriptionInput.addEventListener('input', () => previewDescription.innerText = descriptionInput.value || 'Descrição da embed...');
+    colorInput.addEventListener('input', () => embedBar.style.backgroundColor = colorInput.value);
+    authorInput.addEventListener('input', () => previewAuthor.innerText = authorInput.value || 'Autor');
+    footerInput.addEventListener('input', () => previewFooter.innerText = footerInput.value || 'HzX Vision');
+    
+    imageInput.addEventListener('input', () => {
+        if (imageInput.value.trim() !== '') {
+            previewImage.src = imageInput.value;
+            previewImage.style.display = 'block';
+        } else {
+            previewImage.style.display = 'none';
+        }
+    });
+
+    // =======================================================
+    // 2. BUSCAR OS CANAIS CONFIGURADOS NO SEU SERVER DO RENDER
+    // =======================================================
+    fetch('/api/channels')
+        .then(res => {
+            if (!res.ok) throw new Error('Falha na resposta do servidor');
+            return res.json();
+        })
+        .then(channels => {
+            // Limpa o menu e coloca a opção padrão
+            channelSelect.innerHTML = '<option value="">Escolha um canal</option>';
+            
+            // Adiciona as opções de canais configuradas no backend (GERAL, ANUNCIOS, etc)
+            channels.forEach(ch => {
+                const opt = document.createElement('option');
+                opt.value = ch.id;
+                opt.innerText = ch.name;
+                channelSelect.appendChild(opt);
+            });
+        })
+        .catch(err => {
+            console.error('Erro ao buscar canais:', err);
+            alert('❌ Erro ao carregar a lista de canais do servidor.');
+        });
+
+    // =======================================================
+    // 3. EVENTO DE CLIQUE PARA ENVIAR A EMBED PARA O WEBHOOK
+    // =======================================================
+    sendBtn.addEventListener('click', async () => {
+        const channelId = channelSelect.value;
+        
+        // Validação simples para não enviar sem selecionar um canal
+        if (!channelId) {
+            alert('⚠️ Por favor, selecione um canal antes de enviar!');
+            return;
+        }
+
+        // Monta o objeto com os dados digitados na tela
+        const dadosEmbed = {
+            channelId: channelId,
+            title: titleInput.value,
+            description: descriptionInput.value,
+            color: colorInput.value,
+            author: authorInput.value,
+            footer: footerInput.value,
+            image: imageInput.value
+        };
+
+        try {
+            // Envia os dados para a nova rota do seu backend no Render
+            const response = await fetch('/api/enviar-discord', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosEmbed)
+            });
+
+            const resultado = await response.json();
+
+            if (resultado.success) {
+                alert('🚀 Embed enviada com sucesso para o Discord!');
+                // Limpa os campos após o envio bem-sucedido (Opcional)
+                titleInput.value = '';
+                descriptionInput.value = '';
+                imageInput.value = '';
+                previewTitle.innerText = 'Título';
+                previewDescription.innerText = 'Descrição da embed...';
+                previewImage.style.display = 'none';
+            } else {
+                alert('❌ Erro ao enviar embed: ' + resultado.message);
+            }
+        } catch (error) {
+            console.error('Erro na requisição POST:', error);
+            alert('❌ Erro ao conectar com o servidor.');
+        }
+    });
+});
