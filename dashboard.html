@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Captura dos elementos de Input do formulário
+    // Captura dos inputs
     const channelSelect = document.getElementById('channelSelect');
     const titleInput = document.getElementById('title');
     const descriptionInput = document.getElementById('description');
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageInput = document.getElementById('image');
     const sendBtn = document.getElementById('sendEmbed');
 
-    // Captura dos elementos do Preview em tempo real
+    // Captura do visual (A Estilização / Preview)
     const previewTitle = document.getElementById('previewTitle');
     const previewDescription = document.getElementById('previewDescription');
     const embedBar = document.getElementById('embedBar');
@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewFooter = document.getElementById('previewFooter');
     const previewImage = document.getElementById('previewImage');
 
-    // =======================================================
-    // 1. ATUALIZAÇÃO DO PREVIEW EM TEMPO REAL (LIVE PREVIEW)
-    // =======================================================
+    // ==========================================
+    // 1. ESTILIZAÇÃO E PREVIEW EM TEMPO REAL
+    // ==========================================
     titleInput.addEventListener('input', () => previewTitle.innerText = titleInput.value || 'Título');
     descriptionInput.addEventListener('input', () => previewDescription.innerText = descriptionInput.value || 'Descrição da embed...');
     colorInput.addEventListener('input', () => embedBar.style.backgroundColor = colorInput.value);
@@ -35,19 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // =======================================================
-    // 2. BUSCAR OS CANAIS CONFIGURADOS NO SEU SERVER DO RENDER
-    // =======================================================
+    // ==========================================
+    // 2. BUSCAR CANAIS DO RENDER
+    // ==========================================
     fetch('/api/channels')
-        .then(res => {
-            if (!res.ok) throw new Error('Falha na resposta do servidor');
-            return res.json();
-        })
+        .then(res => res.json())
         .then(channels => {
-            // Limpa o menu e coloca a opção padrão
             channelSelect.innerHTML = '<option value="">Escolha um canal</option>';
-            
-            // Adiciona as opções de canais configuradas no backend (GERAL, ANUNCIOS, etc)
             channels.forEach(ch => {
                 const opt = document.createElement('option');
                 opt.value = ch.id;
@@ -55,24 +49,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 channelSelect.appendChild(opt);
             });
         })
-        .catch(err => {
-            console.error('Erro ao buscar canais:', err);
-            alert('❌ Erro ao carregar a lista de canais do servidor.');
-        });
+        .catch(err => console.error('Erro ao buscar canais:', err));
 
-    // =======================================================
-    // 3. EVENTO DE CLIQUE PARA ENVIAR A EMBED PARA O WEBHOOK
-    // =======================================================
+    // ==========================================
+    // 3. ENVIAR PARA O DISCORD
+    // ==========================================
     sendBtn.addEventListener('click', async () => {
         const channelId = channelSelect.value;
         
-        // Validação simples para não enviar sem selecionar um canal
         if (!channelId) {
-            alert('⚠️ Por favor, selecione um canal antes de enviar!');
+            alert('⚠️ Selecione um canal primeiro!');
             return;
         }
 
-        // Monta o objeto com os dados digitados na tela
         const dadosEmbed = {
             channelId: channelId,
             title: titleInput.value,
@@ -84,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Envia os dados para a nova rota do seu backend no Render
             const response = await fetch('/api/enviar-discord', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -94,19 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultado = await response.json();
 
             if (resultado.success) {
-                alert('🚀 Embed enviada com sucesso para o Discord!');
-                // Limpa os campos após o envio bem-sucedido (Opcional)
-                titleInput.value = '';
-                descriptionInput.value = '';
-                imageInput.value = '';
-                previewTitle.innerText = 'Título';
-                previewDescription.innerText = 'Descrição da embed...';
-                previewImage.style.display = 'none';
+                alert('🚀 Embed enviada com sucesso!');
             } else {
-                alert('❌ Erro ao enviar embed: ' + resultado.message);
+                alert('❌ Erro: ' + resultado.message);
             }
         } catch (error) {
-            console.error('Erro na requisição POST:', error);
             alert('❌ Erro ao conectar com o servidor.');
         }
     });
